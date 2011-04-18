@@ -7,7 +7,7 @@
 #include "llviewerprecompiledheaders.h"
 #include "llimportobject.h"
 #include "llsdserialize.h"
-#include "llsdutil_math.h"
+#include "llsdutil.h"
 #include "llviewerobject.h"
 #include "llagent.h"
 #include "llchat.h"
@@ -24,6 +24,7 @@
 #include "llfloaterperms.h"
 #include "llviewerregion.h"
 #include "llviewerobjectlist.h"
+#include "llsdutil_math.h"
 #include "llimagej2c.h"
 
 // static vars

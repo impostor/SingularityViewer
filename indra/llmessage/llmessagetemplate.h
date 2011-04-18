@@ -38,6 +38,10 @@
 #include "llstat.h"
 #include "llstl.h"
 
+#include <boost/signals.hpp>
+#include <boost/signals/connection.hpp>
+#include <boost/bind.hpp>
+
 class LLMsgVarData
 {
 public:
@@ -108,6 +112,7 @@ public:
 		temp->addData(data, size, type, data_size);
 	}
 
+	S32									mOffset;
 	S32									mBlockNumber;
 	typedef LLDynamicArrayIndexed<LLMsgVarData, const char *, 8> msg_var_data_map_t;
 	msg_var_data_map_t					mMemberVarData;
@@ -135,6 +140,7 @@ public:
 	void addDataFast(char *blockname, char *varname, const void *data, S32 size, EMsgVariableType type, S32 data_size = -1);
 
 public:
+	S32									mOffset;
 	typedef std::map<char*, LLMsgBlkData*> msg_blk_data_map_t;
 	msg_blk_data_map_t					mMemberBlocks;
 	char								*mName;
@@ -269,6 +275,32 @@ enum EMsgDeprecation
 	MD_DEPRECATED
 };
 
+// <edit> VWR-2546
+class LLMessageTemplateHandlerEntry
+{
+public:
+	LLMessageTemplateHandlerEntry(message_handler_func_t handler, void **userdata = NULL) :
+		mHandlerFunc(handler), mUserData(userdata) {}
+
+	void call(LLMessageSystem *msgsystem) const { mHandlerFunc(msgsystem, mUserData); }
+
+	bool operator==(const LLMessageTemplateHandlerEntry&a) { return mHandlerFunc == a.mHandlerFunc; }
+private:
+	// message handler function (this is set by each application)
+	message_handler_func_t mHandlerFunc;
+	void **mUserData;
+};
+
+class callHandler : public std::unary_function<LLMessageTemplateHandlerEntry, void>
+{
+public:
+	callHandler(LLMessageSystem *msg) : mMsg(msg) {}
+	void operator()(const LLMessageTemplateHandlerEntry& a) const { a.call(mMsg); }
+private:
+	LLMessageSystem *mMsg;
+};
+// </edit>
+
 class LLMessageTemplate
 {
 public:
@@ -290,9 +322,12 @@ public:
 		mTotalDecodeTime(0.f),
 		mMaxDecodeTimePerMsg(0.f),
 		mBanFromTrusted(false),
-		mBanFromUntrusted(false),
-		mHandlerFunc(NULL), 
-		mUserData(NULL)
+		// <edit> VWR-2546
+		//mBanFromUntrusted(false),
+		//mHandlerFunc(NULL),
+		//mUserData(NULL)
+		mBanFromUntrusted(false)
+		// </edit>
 	{ 
 		mName = LLMessageStringTable::getInstance()->getString(name);
 	}
@@ -360,18 +395,38 @@ public:
 		return mDeprecation;
 	}
 	
-	void setHandlerFunc(void (*handler_func)(LLMessageSystem *msgsystem, void **user_data), void **user_data)
+	void setHandlerFunc(message_handler_func_t handler_func, void **user_data)
 	{
-		mHandlerFunc = handler_func;
-		mUserData = user_data;
+		if(!mMessageSignal.empty() || mConnectionMap.size() > 0){
+			mMessageSignal.disconnect_all_slots();
+			mConnectionMap.erase(mConnectionMap.begin(),mConnectionMap.end());
+		}
+		addHandlerFunc(handler_func,user_data);
+	}
+
+	void addHandlerFunc(message_handler_func_t handler_func, void **user_data)
+	{
+		if(mConnectionMap.find(handler_func) == mConnectionMap.end())
+			mConnectionMap[handler_func] = mMessageSignal.connect(boost::bind(handler_func,_1,user_data));
+	}
+
+	void delHandlerFunc(message_handler_func_t handler_func)
+	{
+		connection_map_t::iterator iter = mConnectionMap.find(handler_func);
+		if(iter != mConnectionMap.end())
+		{
+			//make sure to disconnect first
+			mConnectionMap[handler_func].disconnect();
+			mConnectionMap.erase(iter);
+		}
 	}
 
 	BOOL callHandlerFunc(LLMessageSystem *msgsystem) const
 	{
-		if (mHandlerFunc)
+		if (!mMessageSignal.empty())
 		{
             LLPerfBlock msg_cb_time("msg_cb", mName);
-			mHandlerFunc(msgsystem, mUserData);
+			mMessageSignal(msgsystem);
 			return TRUE;
 		}
 		return FALSE;
@@ -419,9 +474,11 @@ public:
 	bool									mBanFromUntrusted;
 
 private:
-	// message handler function (this is set by each application)
-	void									(*mHandlerFunc)(LLMessageSystem *msgsystem, void **user_data);
-	void									**mUserData;
+	// message handler functions (this is set by each application)
+	typedef boost::signal<void (LLMessageSystem*)> message_signal_t;
+	message_signal_t mMessageSignal;
+	typedef std::map<message_handler_func_t,boost::signals::connection> connection_map_t;
+	connection_map_t mConnectionMap;
 };
 
 #endif // LL_LLMESSAGETEMPLATE_H

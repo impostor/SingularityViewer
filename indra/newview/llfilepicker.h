@@ -94,7 +94,8 @@ public:
 		// <edit>
 		FFLOAD_INVGZ = 9,
 		FFLOAD_AO = 10,
-		FFLOAD_BLACKLIST = 11
+		FFLOAD_BLACKLIST = 11,
+		FFLOAD_LSL = 12
 		// </edit>
 	};
 
@@ -121,7 +122,6 @@ public:
 		FFSAVE_NOTECARD = 17,
 		FFSAVE_GESTURE = 18,
 		FFSAVE_LSL = 19,
-		// good grief
 		FFSAVE_SHAPE = 20,
 		FFSAVE_SKIN = 21,
 		FFSAVE_HAIR = 22,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater can_close="true" can_drag_on_left="false" can_minimize="true"
      can_resize="false" height="950" name="avatar_texture_debug"
-     title="Avatar Textures" width="960">
+     title="Impostor Avatar Textures" width="960">
 	<text bottom="-40" height="16" left="10" name="label" width="80">
 		Baked Textures
 	</text>
@@ -9,8 +9,7 @@
 		Composite Textures
 	</text>
 
-	<button bottom="-45" left="-160" font="SansSerif" halign="center" height="20" label="Dump IDs to Console"
-	     label_selected="Dump" mouse_opaque="true" name="Dump" scale_image="TRUE" width="150" />
+	
 
 
 	<texture_picker bottom_delta="-145" height="143" label="Hair" left="10" name="hair-baked"

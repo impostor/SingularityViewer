@@ -4,7 +4,6 @@
 #include "llfloaterexport.h"
 #include "lluictrlfactory.h"
 #include "llsdutil.h"
-#include "llsdutil_math.h"
 #include "llsdserialize.h"
 #include "llselectmgr.h"
 #include "llscrolllistctrl.h"
@@ -22,6 +21,7 @@
 #include "lltexturecache.h"
 #include "llimage.h"
 #include "llappviewer.h"
+#include "llsdutil_math.h"
 #include "llimagej2c.h"
 
 std::vector<LLFloaterExport*> LLFloaterExport::instances;

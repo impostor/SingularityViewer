@@ -417,7 +417,7 @@ BOOL LLFloaterAnimPreview::postBuild()
 		}
 	}
 	// <edit>
-	else if(exten == "animatn")
+	else if(exten == "anim" || exten == "animatn" || exten == "neil")
 	{
 		S32 file_size;
 		LLAPRFile raw_animatn;

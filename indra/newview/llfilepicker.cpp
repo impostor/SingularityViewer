@@ -521,6 +521,8 @@ BOOL LLFilePicker::getSaveFile(ESaveFilter filter, const std::string& filename)
 		mOFN.lpstrDefExt = L"lsl";
 		mOFN.lpstrFilter =
 			L"LSL (*.lsl)\0*.lsl\0" \
+			L"Text files (*.txt)\0*.txt\0"
+			L"RTF Files (*.rtf)\0*.rtf\0"
 			L"\0";
 		break;
 	case FFSAVE_SHAPE:

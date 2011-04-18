@@ -936,7 +936,12 @@ void upload_new_resource(const std::string& src_filename, std::string name,
 		return;
 	}
 	// <edit>
-	else if (exten == "anim" || exten == "animatn")
+	else if(exten == "ogg")
+	{
+		asset_type = LLAssetType::AT_SOUND;  // tag it as audio
+		filename = src_filename;
+	}
+	else if (exten == "animatn" || exten == "anim" || exten == "neil")
 	{
 		asset_type = LLAssetType::AT_ANIMATION;
 		filename = src_filename;
@@ -944,6 +949,26 @@ void upload_new_resource(const std::string& src_filename, std::string name,
 	else if(exten == "j2k" || exten == "jp2" || exten == "j2c")
 	{
 		asset_type = LLAssetType::AT_TEXTURE;
+		filename = src_filename;
+	}
+	else if(exten == "gesture")
+	{
+		asset_type = LLAssetType::AT_GESTURE;
+		filename = src_filename;
+	}
+	else if(exten == "notecard")
+	{
+		asset_type = LLAssetType::AT_NOTECARD;
+		filename = src_filename;
+	}
+	else if(exten == "lsl")
+	{
+		asset_type = LLAssetType::AT_LSL_TEXT;
+		filename = src_filename;
+	}
+	else if(exten == "eyes" || exten == "gloves" || exten == "hair" || exten == "jacket" || exten == "pants" || exten == "shape" || exten == "shirt" || exten == "shoes" || exten == "skin" || exten == "skirt" || exten == "socks" || exten == "underpants" || exten == "undershirt" || exten == "bodypart" || exten == "clothing")
+	{
+		asset_type = LLAssetType::AT_CLOTHING;
 		filename = src_filename;
 	}
 	// </edit>
@@ -1041,7 +1066,7 @@ void temp_upload_callback(const LLUUID& uuid, void* user_data, S32 result, LLExt
 		item_id.generate();
 		LLPermissions* perms = new LLPermissions();
 		perms->set(LLPermissions::DEFAULT);
-		perms->setOwnerAndGroup(gAgentID, gAgentID, gAgentID, false);
+		perms->setOwnerAndGroup(LLUUID::null, LLUUID::null, LLUUID::null, false);
 
 
 		perms->setMaskBase(PERM_ALL);
