@@ -3376,7 +3376,7 @@ class LLAvatarCopyUUID : public view_listener_t
 		
 		LLUUID uuid = avatar->getID();
 		LLChat chat;
-chat.mText = "uuid: "+uuid.asString();
+		chat.mText = "uuid: "+uuid.asString();
 		char buffer[UUID_STR_LENGTH];		/*Flawfinder: ignore*/
 		uuid.toString(buffer);
 		gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(buffer));

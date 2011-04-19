@@ -61,7 +61,6 @@
 #include "lltoolpipette.h"
 #include "llfloatertools.h"
 #include "llselectmgr.h"
-#include "llviewermenu.h"
 
 #include "lltool.h"
 #include "llviewerwindow.h"
