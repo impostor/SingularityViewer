@@ -95,6 +95,7 @@
 
 // <edit>
 #include "llfloaterexport.h"
+#include "llfloaterattachments.h"
 // </edit>
 
 #include "llglheaders.h"
@@ -4483,6 +4484,12 @@ void LLSelectMgr::processObjectProperties(LLMessageSystem* msg, void** user_data
 			node->mSitName.assign(sit_name);
 			node->mTouchName.assign(touch_name);
 		}
+
+		// <edit> Send to export floaters
+		LLFloaterExport::receiveObjectProperties(id, name, desc);
+		if(!node)
+			LLFloaterAttachments::dispatchHUDObjectProperties(new LLHUDAttachment(name, desc, owner_id, id, from_task_id, texture_ids, 0, inv_serial));
+		// </edit>
 	}
 
 	dialog_refresh_all();
