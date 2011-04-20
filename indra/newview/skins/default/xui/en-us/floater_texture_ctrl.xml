@@ -59,6 +59,9 @@
 	<button bottom="-276" enabled="true" follows="left|bottom" font="SansSerifSmall"
         halign="center" height="20" label="CpToInv" label_selected="None" left="4"
         mouse_opaque="true" name="CpToInv" scale_image="true" width="64" />
+	<button bottom="-276" enabled="true" follows="left|bottom" font="SansSerifSmall"
+        halign="center" height="20" label="jelly roll" label_selected="None" left="72"
+        mouse_opaque="true" name="jelly_roll_btn" scale_image="true" width="64" />
 	<string name="pick title">
 		Pick:
 	</string>
