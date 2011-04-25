@@ -721,7 +721,7 @@ class LLBeginIMSession : public inventory_panel_listener_t
 	}
 };
 
-void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attachment);
+//void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attachment);
 class LLAttachObject : public inventory_panel_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
@@ -756,7 +756,7 @@ class LLAttachObject : public inventory_panel_listener_t
 
 		if(item && gInventory.isObjectDescendentOf(id, gAgent.getInventoryRootID()))
 		{
-//			rez_attachment(item, attachmentp);
+		rez_attachment(item, attachmentp);
 		}
 		else if(item && item->isComplete())
 		{
