@@ -887,8 +887,9 @@ void init_menus()
 										   NULL,
 										   &check_toggle_hacked_godmode,
 										   (void*)"HackedGodmode"));
-	
-
+	menu->append(new LLMenuItemCallGL("Advanced Menu",
+										   &toggle_debug_menus, NULL));
+										  
 	//these should always be last in a sub menu
 	menu->createJumpKeys();
 	gMenuBarView->appendMenu( menu );
