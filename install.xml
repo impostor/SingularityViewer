@@ -401,9 +401,9 @@
           <key>windows</key>
           <map>
             <key>md5sum</key>
-            <string>1a55dec2907821f5f785648a660126c3</string>
+            <string>5e209d3a61db01171607b02f1a7c4c60</string>
             <key>url</key>
-            <uri>scp:install-packages.lindenlab.com:/local/www/install-packages/doc/fmod-3.75-windows-20080611.tar.bz2</uri>
+            <uri>https://github.com/downloads/simms/ProStorm/fmod-win-v1.bz2</uri>
           </map>
         </map>
       </map>
