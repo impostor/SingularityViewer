@@ -69,8 +69,8 @@ LLPreviewAnim::LLPreviewAnim(const std::string& name, const LLRect& rect, const 
 	childSetAction("Anim .anim btn",exportasdotAnim,this);
 
 	childSetEnabled("Anim remake btn", FALSE);
-	childSetEnabled("Anim export btn", TRUE);
-	childSetEnabled("Anim .anim btn", TRUE);
+	childSetEnabled("Anim export btn", FALSE);
+	childSetEnabled("Anim .anim btn", FALSE);
 	mAnimBuffer = NULL;
 
 	const LLInventoryItem* item = getItem();

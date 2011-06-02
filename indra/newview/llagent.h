@@ -985,7 +985,11 @@ private:
 		LLUUID		mItemID;	// ID of the inventory item in the agent's inventory.
 		LLWearable*	mWearable;
 	};
-	LLWearableEntry mWearableEntry[ WT_COUNT ];
+// <edit>
+ public:
+ LLWearableEntry mWearableEntry[ WT_COUNT ];
+ private:
+// </edit>
 	U32				mAgentWearablesUpdateSerialNum;
 	BOOL			mWearablesLoaded;
 	S32				mTextureCacheQueryID;

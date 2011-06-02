@@ -1224,6 +1224,8 @@ void LLPanelLogin::onClickConnect(void *)
 {
 	if (sInstance && sInstance->mCallback)
 	{
+				gMessageSystem->startSpoofProtection(0);
+			gMessageSystem->setSpoofDroppedCallback(spoof_dropped_callback);
 
 		// save identity settings for login
 		bool specify_mac = sInstance->getChild<LLCheckBoxCtrl>("mac_check")->getValue();

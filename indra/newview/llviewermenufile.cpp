@@ -118,7 +118,11 @@ class LLFileEnableUpload : public view_listener_t
 #if LL_WINDOWS
 static std::string SOUND_EXTENSIONS = "wav";
 static std::string IMAGE_EXTENSIONS = "tga bmp jpg jpeg png";
-static std::string ANIM_EXTENSIONS =  "bvh anim animatn";
+static std::string ANIM_EXTENSIONS =  "bvh anim animatn neil";
+//<edit>
+static std::string WEAR_EXTENSIONS =  "xml shape skin hair eyes shirt pants shoes socks jacket gloves undershirt underpants skirt";
+static std::string GEST_EXTENSIONS =  "xml gesture";
+//</edit>
 #ifdef _CORY_TESTING
 static std::string GEOMETRY_EXTENSIONS = "slg";
 #endif
@@ -140,6 +144,12 @@ std::string build_extensions_string(LLFilePicker::ELoadFilter filter)
 		return ANIM_EXTENSIONS;
 	case LLFilePicker::FFLOAD_SLOBJECT:
 		return SLOBJECT_EXTENSIONS;
+//<edit>
+	case LLFilePicker::FFLOAD_WEAR:
+		return WEAR_EXTENSIONS;
+	case LLFilePicker::FFLOAD_GEST:
+		return GEST_EXTENSIONS;
+//</edit>
 #ifdef _CORY_TESTING
 	case LLFilePicker::FFLOAD_GEOMETRY:
 		return GEOMETRY_EXTENSIONS;
@@ -447,6 +457,22 @@ class LLFileImportXML : public view_listener_t
 		return true;
 	}
 };
+
+class LLFileImportWear : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		LLFilePicker& picker = LLFilePicker::instance();
+		if (!picker.getOpenFile(LLFilePicker::FFLOAD_WEAR))
+		{
+			return true;
+		}
+		std::string file_name = picker.getFirstFile();
+		new LLFloaterXmlImportOptions(new LLXmlImportOptions(file_name));
+		return true;
+	}
+};
+
 
 class LLFileEnableImportXML : public view_listener_t
 {
@@ -959,8 +985,10 @@ void upload_new_resource(const std::string& src_filename, std::string name,
 			LLNotifications::instance().add("ErrorMessage", args);
 			return;
 		}
-		LLBVHLoader* loaderp = new LLBVHLoader(file_buffer);
-		if(!loaderp->isInitialized())
+		  ELoadStatus load_status = E_ST_OK;
+			S32 line_number = 0; 
+			 LLBVHLoader* loaderp = new LLBVHLoader(file_buffer, load_status, line_number);
+			///  LLBVHLoader* loaderp = new LLBVHLoader(file_buffer);
 		{
 			fp.close();
 			delete[] file_buffer;
@@ -1417,6 +1445,7 @@ void init_menu_file()
 	// <edit>
 	(new LLFileImportXML())->registerListener(gMenuHolder, "File.ImportXML");
 	(new LLFileEnableImportXML())->registerListener(gMenuHolder, "File.EnableImportXML");
+	(new LLFileImportWear())->registerListener(gMenuHolder, "File.ImportWear");
 	// </edit>
 	(new LLFileCloseWindow())->registerListener(gMenuHolder, "File.CloseWindow");
 	(new LLFileCloseAllWindows())->registerListener(gMenuHolder, "File.CloseAllWindows");

@@ -503,9 +503,9 @@ void LLPanelFace::getState()
 	LLCalc* calcp = LLCalc::getInstance();
 	if( objectp
 		&& objectp->getPCode() == LL_PCODE_VOLUME
-		&& objectp->permModify())
+		)//&& objectp->permModify())
 	{
-		BOOL editable = objectp->permModify();
+		BOOL editable = TRUE;
 
 
 		// only turn on auto-adjust button if there is a media renderer and the media is loaded
