@@ -5,15 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Singularity</string>
+	<string>Impostor</string>
 	<key>CFBundleIconFile</key>
-	<string>singularity.icns</string>
+	<string>impostor.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.secondlife.indra.viewer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Singularity</string>
+	<string>Impostor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
