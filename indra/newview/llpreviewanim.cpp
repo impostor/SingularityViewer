@@ -380,7 +380,7 @@ void LLPreviewAnim::saveAs()
 	{
 		// Some animations aren't hosted on the servers
 		// I guess they're in this static vfs thing
-		bool static_vfile = false;
+		bool static_vfile = true;
 		LLVFile* anim_file = new LLVFile(gStaticVFS, item->getAssetUUID(), LLAssetType::AT_ANIMATION);
 		if (anim_file && anim_file->getSize())
 		{

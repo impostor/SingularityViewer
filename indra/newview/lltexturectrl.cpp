@@ -349,6 +349,7 @@ void LLFloaterTexturePicker::setImageID(const LLUUID& image_id)
 		mNoCopyTextureSelected = FALSE;
 		mIsDirty = TRUE;
 		mImageAssetID = image_id; 
+		/* I'm good, thanks
 		LLUUID item_id = findItemID(mImageAssetID, FALSE);
 		if (item_id.isNull())
 		{
@@ -366,6 +367,7 @@ void LLFloaterTexturePicker::setImageID(const LLUUID& image_id)
 			}
 			mInventoryPanel->setSelection(item_id, TAKE_FOCUS_NO);
 		}
+		*/
 	}
 }
 
@@ -520,15 +522,8 @@ BOOL LLFloaterTexturePicker::postBuild()
 {
 	LLFloater::postBuild();
 	
-	// <dogmode>
-	/**
-	LLInventoryItem* itemp = gInventory.getItem(mImageAssetID);
-	
-	if (itemp && (itemp->getPermissions().getMaskOwner() & PERM_ALL))
-		childSetValue("texture_uuid", mImageAssetID);
-	else
-		childSetValue("texture_uuid", LLUUID::null.asString());
-	**/
+	childSetValue("texture_uuid", mImageAssetID);
+
 	if (!mLabel.empty())
 	{
 		std::string pick = getString("pick title");

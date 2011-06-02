@@ -520,7 +520,7 @@ set(viewer_SOURCE_FILES
     )
 
 # This gets renamed in the packaging step
-set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
+set(VIEWER_BINARY_NAME "Impostor" CACHE STRING
     "The name of the viewer executable to create.")
 
 if ((LINUX OR DARWIN) AND NOT DARWIN_PPC)
@@ -1134,19 +1134,19 @@ if (WINDOWS)
       include_directories(${ARTWORK_DIR}/res)
     endif(NOT ARTWORK_IN_SOURCE)
 
-	if (MSVC71 OR MSVC80 AND NOT VISTA_ICON)
+	if (MSVC AND NOT VISTA_ICON)
 		set(viewer_RESOURCE_FILES 
 			res/resource.h
 			res/viewerRes_bc.rc 
 			${viewer_RESOURCE_FILES}
 		)
-	else (MSVC71 OR MSVC80 AND NOT VISTA_ICON)
+	else (MSVC AND NOT VISTA_ICON)
 		set(viewer_RESOURCE_FILES 
 			res/resource.h
 			res/viewerRes.rc 
 			${viewer_RESOURCE_FILES}
 		)
-	endif (MSVC71 OR MSVC80 AND NOT VISTA_ICON)
+	endif (MSVC AND NOT VISTA_ICON)
 	  
     SOURCE_GROUP("Resource Files" FILES ${viewer_RESOURCE_FILES})
 
@@ -1164,7 +1164,7 @@ if (WINDOWS)
         comdlg32
         ${DINPUT_LIBRARY}
         ${DXGUID_LIBRARY}
-        fmodvc
+        ${FMOD_LIBRARIES}
         gdi32
         kernel32
         odbc32
@@ -1278,7 +1278,9 @@ endif (WINDOWS)
 if (OPENAL)
   set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DLL_OPENAL")
 endif (OPENAL)
-
+if (MSVC)
+set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DLL_FMOD")
+endif (MSVC)
 if (FMOD)
   set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DLL_FMOD")
 

@@ -203,7 +203,6 @@
 #include "llpanellogin.h"
 //#include "llfloateravatars.h"
 //#include "llactivation.h"
-//#include "llao.h"
 #include "wlfPanel_AdvSettings.h" //Lower right Windlight and Rendering options
 #include "ascentdaycyclemanager.h"
 #include "llfloaterblacklist.h"
@@ -540,13 +539,6 @@ bool idle_startup()
 				LLAppViewer::instance()->earlyExit("LoginFailedNoNetwork", LLSD().with("DIAGNOSTIC", diagnostic));
 			}
 
-			// <edit>
-			if(gMessageSystem)
-			{
-				gMessageSystem->startSpoofProtection(gSavedSettings.getU32("SpoofProtectionLevel"));
-				gMessageSystem->setSpoofDroppedCallback(spoof_dropped_callback);
-			}
-			// </edit>
 			#if LL_WINDOWS
 				// On the windows dev builds, unpackaged, the message.xml file will 
 				// be located in indra/build-vc**/newview/<config>/app_settings.
@@ -1040,7 +1032,6 @@ bool idle_startup()
 		
 		// <edit>
 		LLFloaterBlacklist::loadFromSave();
-		//LLAO::refresh();
 		// </edit>
 
 		if (show_connect_box)
@@ -3297,7 +3288,6 @@ bool update_dialog_callback(const LLSD& notification, const LLSD& response)
 	// userserver no longer exists.
 	query_map["userserver"] = LLViewerLogin::getInstance()->getGridLabel();
 	// <edit>
-	//query_map["channel"] = LL_CHANNEL;
 	query_map["channel"] = gSavedSettings.getString("SpecifiedChannel");
 
 	// *TODO constantize this guy

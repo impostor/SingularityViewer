@@ -23,6 +23,7 @@ copy_if_different(
 set(all_targets ${all_targets} ${out_targets})
 
 
+
 set(debug_src_dir "${CMAKE_SOURCE_DIR}/../libraries/i686-win32/lib/debug")
 set(debug_files
     libapr-1.dll
@@ -30,6 +31,19 @@ set(debug_files
     libapriconv-1.dll
     )
 
+copy_if_different(
+    ${debug_src_dir} 
+    "${CMAKE_CURRENT_BINARY_DIR}/Debug"
+    out_targets 
+    ${debug_files}
+    )
+set(all_targets ${all_targets} ${out_targets})
+
+set(debug_src_dir "${CMAKE_SOURCE_DIR}/../fmodapi375win/api")
+set(debug_files
+    fmod.dll
+    )
+    
 copy_if_different(
     ${debug_src_dir} 
     "${CMAKE_CURRENT_BINARY_DIR}/Debug"
@@ -241,11 +255,23 @@ set(all_targets ${all_targets} ${out_targets})
 
 set(release_src_dir "${CMAKE_SOURCE_DIR}/../libraries/i686-win32/lib/release")
 set(release_files
-    libtcmalloc_minimal.dll
-    fmod.dll
-    libapr-1.dll
+ libapr-1.dll
     libaprutil-1.dll
     libapriconv-1.dll
+    libtcmalloc_minimal.dll
+    )
+    
+copy_if_different(
+    ${release_src_dir} 
+    "${CMAKE_CURRENT_BINARY_DIR}/Release"
+    out_targets 
+    ${release_files}
+    )
+set(all_targets ${all_targets} ${out_targets})
+
+set(release_src_dir "${CMAKE_SOURCE_DIR}/../fmodapi375win/api")
+set(release_files
+    fmod.dll
     )
     
 copy_if_different(
@@ -357,17 +383,17 @@ endif (EXISTS ${internal_llkdu_path})
 if (MSVC)
     FIND_PATH(debug_msvc10_redist_path msvcr100d.dll
         PATHS
-         #  (32bits)       [HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/Debug_NonRedist/x86/Microsoft.VC100.DebugCRT
+        ${MSVC_DEBUG_REDIST_PATH}
+#  (32bits)       [HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/Debug_NonRedist/x86/Microsoft.VC100.DebugCRT
 		 [HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/Debug_NonRedist/x86/Microsoft.VC100.DebugCRT
         NO_DEFAULT_PATH
         NO_DEFAULT_PATH
         )
 
     if(EXISTS ${debug_msvc10_redist_path})
-        set(debug_msvc8_files
+        set(debug_msvc10_files
             msvcr100d.dll
             msvcp100d.dll
-            Microsoft.VC100.DebugCRT.manifest
             )
 
         copy_if_different(
@@ -378,24 +404,12 @@ if (MSVC)
             )
         set(all_targets ${all_targets} ${out_targets})
 
-        set(debug_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Debug/${VIEWER_BINARY_NAME}.exe.config)
-        add_custom_command(
-            OUTPUT ${debug_appconfig_file}
-            COMMAND ${PYTHON_EXECUTABLE}
-            ARGS
-              ${CMAKE_CURRENT_SOURCE_DIR}/build_win32_appConfig.py
-              ${CMAKE_CURRENT_BINARY_DIR}/Debug/Microsoft.VC100.DebugCRT.manifest
-              ${CMAKE_CURRENT_SOURCE_DIR}/SecondLifeDebug.exe.config
-              ${debug_appconfig_file}
-            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Debug/Microsoft.VC100.DebugCRT.manifest
-            COMMENT "Creating debug app config file"
-            )
+    endif ()
 
-    endif (EXISTS ${debug_msvc10_redist_path})
-
-    FIND_PATH(release_msvc8_redist_path msvcr100.dll
+    FIND_PATH(release_msvc10_redist_path msvcr100.dll
         PATHS
-         #  (32bits)     [HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/x86/Microsoft.VC100.CRT
+        ${MSVC_REDIST_PATH}
+#  (32bits)     [HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/x86/Microsoft.VC100.CRT
 		 [HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\VisualStudio\\10.0\\Setup\\VC;ProductDir]/redist/x86/Microsoft.VC100.CRT
         NO_DEFAULT_PATH
         NO_DEFAULT_PATH
@@ -405,7 +419,6 @@ if (MSVC)
         set(release_msvc10_files
             msvcr100.dll
             msvcp100.dll
-            Microsoft.VC100.CRT.manifest
             )
 
         copy_if_different(
@@ -423,7 +436,9 @@ if (MSVC)
             ${release_msvc10_files}
             )
         set(all_targets ${all_targets} ${out_targets})
-
+          
+    endif ()
+    
         copy_if_different(
             ${release_msvc10_redist_path} 
             "${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo"
@@ -431,56 +446,13 @@ if (MSVC)
             ${release_msvc10_files}
             )
         set(all_targets ${all_targets} ${out_targets})
-
-        set(release_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Release/${VIEWER_BINARY_NAME}.exe.config)
-        add_custom_command(
-            OUTPUT ${release_appconfig_file}
-            COMMAND ${PYTHON_EXECUTABLE}
-            ARGS
-              ${CMAKE_CURRENT_SOURCE_DIR}/build_win32_appConfig.py
-              ${CMAKE_CURRENT_BINARY_DIR}/Release/Microsoft.VC100.CRT.manifest
-              ${CMAKE_CURRENT_SOURCE_DIR}/SecondLife.exe.config
-              ${release_appconfig_file}
-            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Release/Microsoft.VC100.CRT.manifest
-            COMMENT "Creating release app config file"
-            )
-
-        set(releasesse2_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/ReleaseSSE2/${VIEWER_BINARY_NAME}.exe.config)
-        add_custom_command(
-            OUTPUT ${releasesse2_appconfig_file}
-            COMMAND ${PYTHON_EXECUTABLE}
-            ARGS
-              ${CMAKE_CURRENT_SOURCE_DIR}/build_win32_appConfig.py
-              ${CMAKE_CURRENT_BINARY_DIR}/ReleaseSSE2/Microsoft.VC100.CRT.manifest
-              ${CMAKE_CURRENT_SOURCE_DIR}/SecondLife.exe.config
-              ${releasesse2_appconfig_file}
-            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ReleaseSSE2/Microsoft.VC100.CRT.manifest
-            COMMENT "Creating release-sse2 app config file"
-            )
-            
-        set(relwithdebinfo_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/${VIEWER_BINARY_NAME}.exe.config)
-        add_custom_command(
-            OUTPUT ${relwithdebinfo_appconfig_file}
-            COMMAND ${PYTHON_EXECUTABLE}
-            ARGS
-              ${CMAKE_CURRENT_SOURCE_DIR}/build_win32_appConfig.py
-              ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/Microsoft.VC100.CRT.manifest
-              ${CMAKE_CURRENT_SOURCE_DIR}/SecondLife.exe.config
-              ${relwithdebinfo_appconfig_file}
-            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/Microsoft.VC100.CRT.manifest
-            COMMENT "Creating relwithdebinfo app config file"
-            )
           
-    endif (EXISTS ${release_msvc10_redist_path})
 endif (MSVC)
 
 add_custom_target(copy_win_libs ALL
   DEPENDS 
     ${all_targets}
-    ${release_appconfig_file} 
-    ${releasesse2_appconfig_file} 
-    ${relwithdebinfo_appconfig_file} 
-    ${debug_appconfig_file}
+  
   )
 add_dependencies(copy_win_libs prepare)
 

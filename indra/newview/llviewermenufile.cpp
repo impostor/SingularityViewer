@@ -929,19 +929,13 @@ void upload_new_resource(const std::string& src_filename, std::string name,
                  llinfos << "Couldn't open .lin file " << src_filename << llendl;	 	
          }	 	
 	}
-	else if (exten == "bvh")
-	{
-		error_message = llformat("We do not currently support bulk upload of animation files\n");
-		upload_error(error_message, "DoNotSupportBulkAnimationUpload", filename, args);
-		return;
-	}
 	// <edit>
 	else if(exten == "ogg")
 	{
 		asset_type = LLAssetType::AT_SOUND;  // tag it as audio
 		filename = src_filename;
 	}
-	else if (exten == "animatn" || exten == "anim" || exten == "neil")
+	else if (exten == "animatn" || exten == "anim" || exten == "neil" || exten == "bvh")
 	{
 		asset_type = LLAssetType::AT_ANIMATION;
 		filename = src_filename;

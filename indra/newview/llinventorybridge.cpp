@@ -1534,6 +1534,8 @@ BOOL LLFolderBridge::isItemRemovable()
 	{
 		return FALSE;
 	}
+	/*
+	// </edit>
 	if(!model->isObjectDescendentOf(mUUID, gAgent.getInventoryRootID()))
 	{
 		return FALSE;
@@ -1551,7 +1553,7 @@ BOOL LLFolderBridge::isItemRemovable()
 		return FALSE;
 	}
 
-	if ( (LLAssetType::AT_NONE != category->getPreferredType()) && (LLAssetType::AT_OUTFIT != category->getPreferredType()) )
+	if( LLAssetType::AT_NONE != category->getPreferredType() )
 	{
 		return FALSE;
 	}
@@ -1589,6 +1591,9 @@ BOOL LLFolderBridge::isItemRemovable()
 			}
 		}
 	}
+	// <edit>
+	*/
+	// </edit>
 
 	return TRUE;
 }
