@@ -929,13 +929,60 @@ void upload_new_resource(const std::string& src_filename, std::string name,
                  llinfos << "Couldn't open .lin file " << src_filename << llendl;	 	
          }	 	
 	}
-	// <edit>
 	else if(exten == "ogg")
 	{
 		asset_type = LLAssetType::AT_SOUND;  // tag it as audio
 		filename = src_filename;
 	}
-	else if (exten == "animatn" || exten == "anim" || exten == "neil" || exten == "bvh")
+	else if (exten == "bvh")
+	{
+		// <edit> THE FUCK WE DON'T
+		//error_message = llformat("We do not currently support bulk upload of animation files\n");
+		//upload_error(error_message, "DoNotSupportBulkAnimationUpload", filename, args);
+		//return;
+		asset_type = LLAssetType::AT_ANIMATION;
+		S32 file_size;
+		LLAPRFile fp;
+		
+		if(!fp.open(src_filename, LL_APR_RB, LLAPRFile::local, &file_size))
+		{
+			args["ERROR_MESSAGE"] = llformat("Couldn't read file %s\n", src_filename.c_str());
+			LLNotifications::instance().add("ErrorMessage", args);
+			return;
+		}
+		char* file_buffer = new char[file_size + 1];
+		if(!fp.read(file_buffer, file_size))
+		{
+			fp.close();
+			delete[] file_buffer;
+			args["ERROR_MESSAGE"] = llformat("Couldn't read file %s\n", src_filename.c_str());
+			LLNotifications::instance().add("ErrorMessage", args);
+			return;
+		}
+		LLBVHLoader* loaderp = new LLBVHLoader(file_buffer);
+		if(!loaderp->isInitialized())
+		{
+			fp.close();
+			delete[] file_buffer;
+			args["ERROR_MESSAGE"] = llformat("Couldn't convert file %s to internal animation format\n", src_filename.c_str());
+			LLNotifications::instance().add("ErrorMessage", args);
+			return;
+		}
+		S32 buffer_size = loaderp->getOutputSize();
+		U8* buffer = new U8[buffer_size];
+		LLDataPackerBinaryBuffer dp(buffer, buffer_size);
+		loaderp->serialize(dp);
+		LLAPRFile apr_file;
+		apr_file.open(filename, LL_APR_WB, LLAPRFile::local);
+		apr_file.write(buffer, buffer_size);
+		delete[] file_buffer;
+		delete[] buffer;
+		fp.close();
+		apr_file.close();
+		// </edit>
+	}
+	// <edit>
+	else if (exten == "animatn" || exten == "anim" || exten == "neil")
 	{
 		asset_type = LLAssetType::AT_ANIMATION;
 		filename = src_filename;
