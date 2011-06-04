@@ -255,10 +255,10 @@ set(all_targets ${all_targets} ${out_targets})
 
 set(release_src_dir "${CMAKE_SOURCE_DIR}/../libraries/i686-win32/lib/release")
 set(release_files
- libapr-1.dll
+    libtcmalloc_minimal.dll
+    libapr-1.dll
     libaprutil-1.dll
     libapriconv-1.dll
-    libtcmalloc_minimal.dll
     )
     
 copy_if_different(
@@ -277,6 +277,14 @@ set(release_files
 copy_if_different(
     ${release_src_dir} 
     "${CMAKE_CURRENT_BINARY_DIR}/Release"
+    out_targets 
+    ${release_files}
+    )
+set(all_targets ${all_targets} ${out_targets})
+
+copy_if_different(
+    ${release_src_dir} 
+    "${CMAKE_CURRENT_BINARY_DIR}/ReleaseSSE2"
     out_targets 
     ${release_files}
     )
@@ -436,9 +444,7 @@ if (MSVC)
             ${release_msvc10_files}
             )
         set(all_targets ${all_targets} ${out_targets})
-          
-    endif ()
-    
+
         copy_if_different(
             ${release_msvc10_redist_path} 
             "${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo"
@@ -447,6 +453,7 @@ if (MSVC)
             )
         set(all_targets ${all_targets} ${out_targets})
           
+    endif ()
 endif (MSVC)
 
 add_custom_target(copy_win_libs ALL
