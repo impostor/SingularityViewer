@@ -23,7 +23,6 @@ copy_if_different(
 set(all_targets ${all_targets} ${out_targets})
 
 
-
 set(debug_src_dir "${CMAKE_SOURCE_DIR}/../libraries/i686-win32/lib/debug")
 set(debug_files
     libapr-1.dll
@@ -277,14 +276,6 @@ set(release_files
 copy_if_different(
     ${release_src_dir} 
     "${CMAKE_CURRENT_BINARY_DIR}/Release"
-    out_targets 
-    ${release_files}
-    )
-set(all_targets ${all_targets} ${out_targets})
-
-copy_if_different(
-    ${release_src_dir} 
-    "${CMAKE_CURRENT_BINARY_DIR}/ReleaseSSE2"
     out_targets 
     ${release_files}
     )
