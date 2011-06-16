@@ -1198,14 +1198,9 @@ void LLPanelFace::onClickCopy(void* userdata)
 		tex_params["imageid"] = LLUUID::null;
 		gSavedPerAccountSettings.setLLSD("Image.Settings", tex_params);
 		if (itemp)
-		{
-			LLPermissions perms = itemp->getPermissions();
-			//full perms
-			if (perms.getMaskOwner() & PERM_ITEM_UNRESTRICTED)
 			{
 				tex_params["imageid"] = tex;
 			}
-		}
 		llinfos << "Copying params on face " << i << "." << llendl;
 		textures.append(tex_params);
 	}

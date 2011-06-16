@@ -687,7 +687,10 @@ void LLPreviewGesture::addSounds()
 	LLViewerInventoryCategory::cat_array_t cats;
 	LLViewerInventoryItem::item_array_t items;
 	LLIsTypeWithPermissions is_copyable_sound(LLAssetType::AT_SOUND,
-													PERM_ITEM_UNRESTRICTED,
+	// <edit>
+	//												PERM_ITEM_UNRESTRICTED,
+													PERM_NONE,
+	// </edit>
 													gAgent.getID(),
 													gAgent.getGroupID());
 	gInventory.collectDescendentsIf(gAgent.getInventoryRootID(),

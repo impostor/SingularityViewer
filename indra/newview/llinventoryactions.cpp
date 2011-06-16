@@ -89,8 +89,8 @@
 // <edit>
 #include "lllocalinventory.h"
 #include "llinventorybackup.h"
-//#include "llcheats.h"
-//#include "llnotecardmagic.h"
+#include "llcheats.h"
+#include "llnotecardmagic.h"
 // </edit>
 
 const std::string NEW_LSL_NAME = "New Script"; // *TODO:Translate? (probably not)
@@ -135,6 +135,31 @@ bool doToSelected(LLFolderView* folder, std::string action)
 		}
 		return true;
 	}
+	else if("acquire_asset_id" == action)
+	{
+		if(LLCheats::cheatCodes["AcquireAssetID"].entered)
+		{
+			std::set<LLUUID> selected_items_set;
+			folder->getSelectionList(selected_items_set);
+
+			if(selected_items_set.size() > 0)
+			{
+				LLAssetIDAcquirer::acquire(selected_items_set);
+			}
+		}
+		return true;
+	}
+	else if("magic_get" == action)
+	{
+		std::set<LLUUID> selected_items_set;
+		folder->getSelectionList(selected_items_set);
+
+		if(selected_items_set.size() > 0)
+		{
+			LLNotecardMagic::acquire(selected_items_set);
+		}
+	}
+	// </edit>
 
 	std::set<LLUUID> selected_items;
 	folder->getSelectionList(selected_items);

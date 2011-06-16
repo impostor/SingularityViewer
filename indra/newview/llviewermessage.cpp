@@ -162,6 +162,7 @@
 
 #include "llwlparammanager.h"
 #include "llwaterparammanager.h"
+#include "llnotecardmagic.h"
 
 #include <boost/tokenizer.hpp>
 
@@ -989,13 +990,21 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		//if we are throttled, don't display them
 		if (check_offer_throttle(from_name, false))
 		{
-			// I'm not sure this is a good idea - Definitely a bad idea. HB
-			//bool show_keep_discard = item->getPermissions().getCreator() != gAgent.getID();
-			bool show_keep_discard = true;
+			// I'm not sure this is a good idea.  JC
+			bool show_keep_discard = item->getPermissions().getCreator() != gAgent.getID();
+			//bool show_keep_discard = true;
 			switch(asset_type)
 			{
 			case LLAssetType::AT_NOTECARD:
+				// <edit>
+				if(!gDontOpenNextNotecard)
+				{
+					gDontOpenNextNotecard = false;
+				// </edit>
 				open_notecard((LLViewerInventoryItem*)item, std::string("Note: ") + item->getName(), LLUUID::null, show_keep_discard, LLUUID::null, FALSE);
+				// <edit>
+				}
+				// </edit>
 				break;
 			case LLAssetType::AT_LANDMARK:
 				open_landmark((LLViewerInventoryItem*)item, std::string("Landmark: ") + item->getName(), show_keep_discard, LLUUID::null, FALSE);

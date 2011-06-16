@@ -97,7 +97,7 @@
 #include "llfloateranimpreview.h" // for reuploads
 #include "llfloaterimagepreview.h" // for reuploads
 #include "llimportobject.h" // for disabling options during import
-//#include "llcheats.h"
+#include "llcheats.h"
 #include "dofloaterhex.h"
 #include "hgfloatertexteditor.h"
 // </edit>
@@ -699,8 +699,15 @@ void LLInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else
 	{
+		// <edit>
+		if(LLCheats::cheatCodes["AcquireAssetID"].entered)
+		{
+			items.push_back(std::string("Acquire Asset ID"));
+		}
+		// </edit>
 		items.push_back(std::string("Open"));
 		items.push_back(std::string("Properties"));
+
 
 // [RLVa:KB] - Checked: 2009-11-11 (RLVa-1.1.0a) | Modified: RLVa-1.1.0a
 		if (rlv_handler_t::isEnabled())
@@ -1181,6 +1188,16 @@ void LLItemBridge::performAction(LLFolderView* folder, LLInventoryModel* model, 
 
 		switch(item->getType())
 		{
+		case LLAssetType::AT_ANIMATION:
+			if (!picker.getOpenFile(LLFilePicker::FFLOAD_ANIM))
+				return;
+			filename = picker.getFirstFile();
+			if (!filename.empty())
+			{
+				LLFloaterAnimPreview* floaterp = new LLFloaterAnimPreview(filename, item);
+				LLUICtrlFactory::getInstance()->buildFloater(floaterp, "floater_animation_preview.xml");
+			}
+			break;
 		case LLAssetType::AT_TEXTURE:
 			if(!picker.getOpenFile(LLFilePicker::FFLOAD_IMAGE))
 				return;
@@ -4211,6 +4228,12 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else
 	{
+		// <edit>
+		if(LLCheats::cheatCodes["AcquireAssetID"].entered)
+		{
+			items.push_back(std::string("Acquire Asset ID"));
+		}
+		// </edit>
 		items.push_back(std::string("Properties"));
 
 		getClipboardEntries(true, items, disabled_items, flags);

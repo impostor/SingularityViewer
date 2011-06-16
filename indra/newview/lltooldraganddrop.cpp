@@ -2870,7 +2870,9 @@ EAcceptance LLToolDragAndDrop::dad3dGiveInventoryObject(
 	if(avatar && avatar->isWearingAttachment( item->getUUID() ) )
 	{
 		// You can't give objects that are attached to you
-		return ACCEPT_NO;
+		// <edit>
+		//return ACCEPT_NO;
+		// </edit>
 	}
 	if( obj && avatar )
 	{

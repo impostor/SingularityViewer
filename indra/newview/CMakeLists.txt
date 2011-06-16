@@ -111,6 +111,7 @@ set(viewer_SOURCE_FILES
     llcallingcard.cpp
     llcaphttpsender.cpp
     llchatbar.cpp
+    llcheats.cpp
     llclassifiedinfo.cpp
     llclassifiedstatsresponder.cpp
     llcloud.cpp
@@ -294,6 +295,7 @@ set(viewer_SOURCE_FILES
     llmediaremotectrl.cpp
     llmemoryview.cpp
     llmenucommands.cpp
+    llmochascript.cpp
     llmimetypes.cpp
     llmorphview.cpp
     llmoveview.cpp
@@ -302,6 +304,7 @@ set(viewer_SOURCE_FILES
     llnameeditor.cpp
     llnamelistctrl.cpp
     llnetmap.cpp
+    llnotecardmagic.cpp
     llnotify.cpp
     lloverlaybar.cpp
     llpanelaudioprefs.cpp
@@ -587,6 +590,7 @@ set(viewer_HEADER_FILES
     llcallingcard.h
     llcaphttpsender.h
     llchatbar.h
+    llcheats.h
     llclassifiedinfo.h
     llclassifiedstatsresponder.h
     llcloud.h
@@ -771,6 +775,7 @@ set(viewer_HEADER_FILES
     llmemoryview.h
     llmenucommands.h
     llmimetypes.h
+    llmochascript.h
     llmorphview.h
     llmoveview.h
     llmutelist.h
@@ -778,6 +783,7 @@ set(viewer_HEADER_FILES
     llnameeditor.h
     llnamelistctrl.h
     llnetmap.h
+    llnotecardmagic.h
     llnotify.h
     lloverlaybar.h
     llpanelaudioprefs.h

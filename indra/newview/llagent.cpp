@@ -141,7 +141,9 @@
 #include "llfollowcam.h"
 
 #include "hippogridmanager.h"
-
+// </edit>
+#include "llcheats.h"
+// </edit>
 // [RLVa:KB] - Checked: 2010-09-27 (RLVa-1.1.3b)
 #include "rlvhandler.h"
 #include "rlvinventory.h"

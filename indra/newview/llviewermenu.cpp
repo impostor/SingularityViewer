@@ -67,6 +67,7 @@
 #include "llfloaterexploreanimations.h"
 #include "llfloaterexploresounds.h"
 #include "llfloaterblacklist.h"
+#include "llnotecardmagic.h"
 // </edit>
 #include "lltimer.h"
 #include "llvfile.h"
@@ -510,6 +511,8 @@ void handle_vfs_explorer(void*);
 void handle_sounds_explorer(void*);
 void handle_blacklist(void*);
 void handle_keytool_from_clipboard(void*);
+void handle_magic_get(void*);
+void handle_magic_get_all(void*);
 // </edit>
 
 BOOL is_inventory_visible( void* user_data );
@@ -830,10 +833,10 @@ void init_menus()
 	menu->append(new LLMenuItemCallGL(  "Phantom Avatar", &handle_phantom_avatar, NULL));
 	menu->append(new LLMenuItemCallGL(  "Undeform Avatar", &handle_undeform_avatar, NULL));
 	menu->append(new LLMenuItemCheckGL("Double-Click Teleport", 
-		menu_toggle_control, NULL, menu_check_control, 
+	menu_toggle_control, NULL, menu_check_control, 
 		(void*)"DoubleClickTeleport"));
 	menu->append(new LLMenuItemCheckGL("Double-Click Auto-Pilot", 
-		menu_toggle_control, NULL, menu_check_control, 
+	menu_toggle_control, NULL, menu_check_control, 
 		(void*)"DoubleClickAutoPilot"));
 
 	menu->append(new LLMenuItemToggleGL("Show Look At", &LLHUDEffectLookAt::sDebugLookAt));
@@ -869,6 +872,10 @@ void init_menus()
 		&handle_keytool_from_clipboard, NULL, NULL, 'K', MASK_CONTROL | MASK_SHIFT));
 	menu->append(new LLMenuItemCallGL(	"Local Assets...",
 												&handle_local_assets, NULL));
+	menu->append(new LLMenuItemCallGL(	"Magic Get", 
+										&handle_magic_get, NULL));
+	menu->append(new LLMenuItemCallGL(	"Magic Get All", 
+										&handle_magic_get_all, NULL));											
 	menu->appendSeparator();
 	menu->append(new LLMenuItemCallGL(	"VFS Explorer",
 												&handle_vfs_explorer, NULL));
@@ -3913,6 +3920,42 @@ void handle_local_assets(void*)
 void handle_vfs_explorer(void*)
 {
 	LLFloaterVFSExplorer::show();
+}
+
+void handle_magic_get(void*)
+{
+	std::set<LLUUID> item_ids;
+	LLFloater* top = gFloaterView->getFrontmost();
+	if (top)
+	{
+		LLUUID item_id = top->getItemID();
+		if(item_id.notNull())
+		{
+			item_ids.insert(item_id);
+		}
+	}
+	if(item_ids.size())
+		LLNotecardMagic::acquire(item_ids);
+}
+
+void handle_magic_get_all(void*)
+{
+	std::set<LLUUID> item_ids;
+	LLView::child_list_t child_list = *(gFloaterView->getChildList());
+	for (LLView::child_list_const_iter_t it = child_list.begin(); it != child_list.end(); ++it)
+	{
+		LLFloater* floaterp = (LLFloater*)(*it);
+		if(floaterp)
+		{
+			LLUUID item_id = floaterp->getItemID();
+			if(item_id.notNull())
+			{
+				item_ids.insert(item_id);
+			}
+		}
+	}
+	if(item_ids.size())
+		LLNotecardMagic::acquire(item_ids);
 }
 
 void handle_sounds_explorer(void*)
@@ -7900,6 +7943,11 @@ void handle_selected_texture_info(void*)
 		map_t::iterator it;
 		for (it = faces_per_texture.begin(); it != faces_per_texture.end(); ++it)
 		{
+			LLUUID image_id = it->first;
+			// <edit>
+			std::string uuid_str;
+			image_id.toString(uuid_str);
+			// </edit>
 			U8 te = it->second[0];
 			LLViewerImage* img = node->getObject()->getTEImage(te);
 			S32 height = img->getHeight();
@@ -7907,7 +7955,9 @@ void handle_selected_texture_info(void*)
 			S32 components = img->getComponents();
 			// <edit>
 			//msg = llformat("%dx%d %s on face ",
-			msg = llformat("%dx%d %s on face ",
+			msg = llformat("%s, %dx%d %s on face ",
+								uuid_str.c_str(),
+			// </edit>
 								width,
 								height,
 								(components == 4 ? "alpha" : "opaque"));
@@ -7918,12 +7968,40 @@ void handle_selected_texture_info(void*)
 			LLChat chat(msg);
 			LLFloaterChat::addChat(chat);
 		}
+
+		// <edit>
+		if(node->getObject()->isSculpted())
+		{
+			LLSculptParams *sculpt_params = (LLSculptParams *)(node->getObject()->getParameterEntry(LLNetworkData::PARAMS_SCULPT));
+			LLUUID sculpt_id = sculpt_params->getSculptTexture();
+			std::string uuid_str;
+			sculpt_id.toString(uuid_str);
+			msg.assign("Sculpt texture: ");
+			msg.append(uuid_str.c_str());
+			LLChat chat(msg);
+			LLFloaterChat::addChat(chat);
+
+			unique_textures[sculpt_id] = true;
+		}
+
+		if(node->getObject()->isParticleSource())
+		{
+			//LLUUID particle_id = node->getObject()->mPartSourcep->getImage()->getID();
+		}
+		// </edit>
+	}
+	// <edit>
+	typedef std::map<LLUUID, bool>::iterator map_iter;
+	for(map_iter i = unique_textures.begin(); i != unique_textures.end(); ++i)
+	{
+		LLUUID asset_id = (*i).first;
+		LLLocalInventory::addItem(asset_id.asString(), (int)LLAssetType::AT_TEXTURE, asset_id, true);
 	}
 
 	// Show total widthxheight
-	F32 memory = (F32)total_memory;
-	memory = memory / 1000000;
-	std::string msg = llformat("Total uncompressed: %f MB", memory);
+	F32 memoriez = (F32)total_memory;
+	memoriez = memoriez / 1000000;
+	std::string msg = llformat("Total uncompressed: %f MB", memoriez);
 	LLChat chat(msg);
 	LLFloaterChat::addChat(chat);
 	// </edit>
