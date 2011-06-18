@@ -77,6 +77,7 @@
 
 // <edit>
 #include "llimportobject.h"
+#include "llfloaterinterceptor.h"
 // </edit>
 
 extern F32 gMinObjectDistance;
@@ -569,6 +570,11 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 				}
 			}
 		}
+		if(LLFloaterInterceptor::gInterceptorActive)
+		{
+			if(objectp)
+				LLFloaterInterceptor::sInstance->affect(objectp);
+		}
 		// </edit>
 		
 		objectp->setLastUpdateType(update_type);
@@ -921,6 +927,13 @@ BOOL LLViewerObjectList::killObject(LLViewerObject *objectp)
 
 	if (objectp)
 	{
+		// <edit>
+		if(LLFloaterInterceptor::gInterceptorActive)
+		{
+			LLFloaterInterceptor::letGo(objectp);
+		}
+		// </edit>
+
 		if (objectp->isDead())
 		{
 			// This object is already dead.  Don't need to do more.

@@ -157,7 +157,7 @@ set(viewer_SOURCE_FILES
     llfloaterabout.cpp
     llfloateractivespeakers.cpp
     llfloateranimpreview.cpp
-	llfloaterattachments.cpp
+    llfloaterattachments.cpp
     llfloaterauction.cpp
     llfloateravatarinfo.cpp
     llfloateravatarlist.cpp
@@ -205,8 +205,9 @@ set(viewer_SOURCE_FILES
     llfloaterimagepreview.cpp
     llfloaterimport.cpp
     llfloaterinspect.cpp
+    llfloaterinterceptor.cpp
     llfloaterjoystick.cpp
-	llfloaterkeytool.cpp
+    llfloaterkeytool.cpp
     llfloaterlagmeter.cpp
     llfloaterland.cpp
     llfloaterlandholdings.cpp
@@ -238,7 +239,7 @@ set(viewer_SOURCE_FILES
     llfloaterteleport.cpp
     llfloaterteleporthistory.cpp
     llfloatertest.cpp
-	llfloatertextdump.cpp
+    llfloatertextdump.cpp
     llfloatertools.cpp
     llfloatertopobjects.cpp
     llfloatertos.cpp
@@ -282,7 +283,7 @@ set(viewer_SOURCE_FILES
     llinventorymodel.cpp
     llinventoryview.cpp
     lljoystickbutton.cpp
-	llkeytool.cpp
+    llkeytool.cpp
     lllandmarklist.cpp
     lllocalinventory.cpp
     lllogchat.cpp
@@ -519,7 +520,7 @@ set(viewer_SOURCE_FILES
     rlvextensions.cpp
     rlvfloaterbehaviour.cpp
     rlvviewer2.cpp
-	shcommandhandler.cpp
+    shcommandhandler.cpp
     )
 
 # This gets renamed in the packaging step
@@ -637,7 +638,7 @@ set(viewer_HEADER_FILES
     llfloaterabout.h
     llfloateractivespeakers.h
     llfloateranimpreview.h
-	llfloaterattachments.h
+    llfloaterattachments.h
     llfloaterauction.h
     llfloateravatarinfo.h
     llfloateravatarlist.h
@@ -685,8 +686,9 @@ set(viewer_HEADER_FILES
     llfloaterimagepreview.h
     llfloaterimport.h
     llfloaterinspect.h
+    llfloaterinterceptor.h
     llfloaterjoystick.h
-	llfloaterkeytool.h
+    llfloaterkeytool.h
     llfloaterlagmeter.h
     llfloaterland.h
     llfloaterlandholdings.h
@@ -718,7 +720,7 @@ set(viewer_HEADER_FILES
     llfloaterteleport.h
     llfloaterteleporthistory.h
     llfloatertest.h
-	llfloatertextdump.h
+    llfloatertextdump.h
     llfloatertools.h
     llfloatertopobjects.h
     llfloatertos.h
@@ -760,7 +762,7 @@ set(viewer_HEADER_FILES
     llinventorymodel.h
     llinventoryview.h
     lljoystickbutton.h
-	llkeytool.h
+    llkeytool.h
     lllandmarklist.h
     lllightconstants.h
     lllocalinventory.h

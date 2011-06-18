@@ -64,6 +64,7 @@
 #include "lllocalinventory.h"
 #include "llfloaterimport.h"
 #include "llfloaterexport.h"
+#include "llfloaterinterceptor.h"
 #include "llfloaterexploreanimations.h"
 #include "llfloaterexploresounds.h"
 #include "llfloaterblacklist.h"
@@ -430,6 +431,7 @@ void handle_leave_god_mode(void*);
 // <edit>
 void handle_fake_away_status(void*);
 void handle_area_search(void*);
+void handle_interceptor(void*);
 
 // <dogmode> for pose stand
 LLUUID current_pose = LLUUID::null;
@@ -832,6 +834,8 @@ void init_menus()
 										&handle_close_all_notifications, NULL, NULL, 'D', MASK_CONTROL | MASK_ALT | MASK_SHIFT));
 	menu->append(new LLMenuItemCallGL(  "Phantom Avatar", &handle_phantom_avatar, NULL));
 	menu->append(new LLMenuItemCallGL(  "Undeform Avatar", &handle_undeform_avatar, NULL));
+	menu->append(new LLMenuItemCallGL(	"Interceptor",  
+										&handle_interceptor,  NULL, NULL, 'I', MASK_CONTROL | MASK_ALT | MASK_SHIFT));
 	menu->append(new LLMenuItemCheckGL("Double-Click Teleport", 
 	menu_toggle_control, NULL, menu_check_control, 
 		(void*)"DoubleClickTeleport"));
@@ -3920,6 +3924,14 @@ void handle_local_assets(void*)
 void handle_vfs_explorer(void*)
 {
 	LLFloaterVFSExplorer::show();
+}
+
+void handle_interceptor(void*)
+{
+	if(LLFloaterInterceptor::sInstance)
+		LLFloaterInterceptor::sInstance->close(false);
+	else
+		LLFloaterInterceptor::show();
 }
 
 void handle_magic_get(void*)
