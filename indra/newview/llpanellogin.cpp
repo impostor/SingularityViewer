@@ -329,14 +329,10 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	childSetAction("grids_btn", onClickGrids, this);
 	childSetCommitCallback("grids_combo", onSelectGrid, this);
 
-	//std::string channel = LL_CHANNEL;
-
 	std::string channel = gSavedSettings.getString("SpecifiedChannel");
+
 	std::string version = llformat("%d.%d.%d (%d)",
-		LL_VERSION_MAJOR,
-		LL_VERSION_MINOR,
-		LL_VERSION_PATCH,
-		LL_VIEWER_BUILD );
+	gSavedSettings.getU32("SpecifiedVersionMaj"), gSavedSettings.getU32("SpecifiedVersionMin"), gSavedSettings.getU32("SpecifiedVersionPatch"), gSavedSettings.getU32("SpecifiedVersionBuild"));
 	LLTextBox* channel_text = getChild<LLTextBox>("channel_text");
 	channel_text->setTextArg("[CHANNEL]", channel); // though not displayed
 	channel_text->setTextArg("[VERSION]", version);
@@ -1048,21 +1044,15 @@ void LLPanelLogin::loadLoginPage()
 
 	std::string version = llformat("%d.%d.%d (%d)",
 						gSavedSettings.getU32("SpecifiedVersionMaj"), gSavedSettings.getU32("SpecifiedVersionMin"), gSavedSettings.getU32("SpecifiedVersionPatch"), gSavedSettings.getU32("SpecifiedVersionBuild"));
-
-	//char* curl_channel = curl_escape(gSavedSettings.getString("VersionChannelName").c_str(), 0);
-	char* curl_channel = curl_escape(gSavedSettings.getString("SpecifiedChannel").c_str(), 0);
-	char* curl_version = curl_escape(version.c_str(), 0);
-
-	oStr << "&channel=" << curl_channel;
-	oStr << "&version=" << curl_version;
-
-	curl_free(curl_channel);
-	curl_free(curl_version);
+	std::string channel = gSavedSettings.getString("SpecifiedChannel");
+	
+	if(login_page.find("secondlife.com") == -1) {
+		oStr << "&channel=" << LLWeb::curlEscape(channel);
+		oStr << "&version=" << LLWeb::curlEscape(version);
+	}
 
 	// Grid
-	char* curl_grid = curl_escape(LLViewerLogin::getInstance()->getGridLabel().c_str(), 0);
-	oStr << "&grid=" << curl_grid;
-	curl_free(curl_grid);
+	oStr << "&grid=" << LLWeb::curlEscape(LLViewerLogin::getInstance()->getGridLabel());
 
 	if (gHippoGridManager->getConnectedGrid()->isSecondLife()) {
 		// find second life grid from login URI
@@ -1076,9 +1066,7 @@ void LLPanelLogin::loadLoginPage()
 				i = tmp.rfind('/');
 			if (i != std::string::npos) {
 				tmp = tmp.substr(i+1);
-				char* curl_grid = curl_escape(tmp.c_str(), 0);
-				oStr << "&grid=" << curl_grid;
-				curl_free(curl_grid);
+				oStr << "&grid=" << LLWeb::curlEscape(tmp);
 			}
 		}
 	}
@@ -1135,13 +1123,11 @@ void LLPanelLogin::loadLoginPage()
 		lastname = gSavedSettings.getString("LastName");
 	}
 	
-	char* curl_region = curl_escape(region.c_str(), 0);
+	std::string curl_region = LLWeb::curlEscape(region);
 
 	oStr <<"firstname=" << firstname <<
 		"&lastname=" << lastname << "&location=" << location <<	"&region=" << curl_region;
 	
-	curl_free(curl_region);
-
 	if (!password.empty())
 	{
 		oStr << "&password=" << password;
@@ -1224,8 +1210,6 @@ void LLPanelLogin::onClickConnect(void *)
 {
 	if (sInstance && sInstance->mCallback)
 	{
-				gMessageSystem->startSpoofProtection(0);
-			gMessageSystem->setSpoofDroppedCallback(spoof_dropped_callback);
 
 		// save identity settings for login
 		bool specify_mac = sInstance->getChild<LLCheckBoxCtrl>("mac_check")->getValue();
