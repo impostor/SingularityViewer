@@ -991,8 +991,8 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		if (check_offer_throttle(from_name, false))
 		{
 			// I'm not sure this is a good idea.  JC
-			bool show_keep_discard = item->getPermissions().getCreator() != gAgent.getID();
-			//bool show_keep_discard = true;
+			//bool show_keep_discard = item->getPermissions().getCreator() != gAgent.getID();
+			bool show_keep_discard = true;
 			switch(asset_type)
 			{
 			case LLAssetType::AT_NOTECARD:
