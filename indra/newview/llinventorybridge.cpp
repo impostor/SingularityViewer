@@ -635,19 +635,21 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id, std::vector<std::str
 
 			if (show_asset_id)
 			{
-				items.push_back(std::string("Copy Asset UUID"));
+			items.push_back(std::string("Copy Asset UUID"));
 			}
-	items.push_back(std::string("Open With..."));
 
-
-	items.push_back(std::string("Save As..."));
-	items.push_back(std::string("Save InvCache..."));
+			items.push_back(std::string("Magic Get"));
+			items.push_back(std::string("Rez"));
+			items.push_back(std::string("Impostor"));
+			items.push_back(std::string("Reupload..."));
+			items.push_back(std::string("Save As..."));
+			items.push_back(std::string("Save InvCache..."));
 			items.push_back(std::string("Copy Separator"));
 
 			items.push_back(std::string("Copy"));
 			if (!isItemCopyable())
 			{
-				disabled_items.push_back(std::string("Copy"));
+			disabled_items.push_back(std::string("Copy"));
 			}
 		}
 	}
@@ -702,7 +704,7 @@ void LLInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 		// <edit>
 		if(LLCheats::cheatCodes["AcquireAssetID"].entered)
 		{
-			items.push_back(std::string("Acquire Asset ID"));
+		items.push_back(std::string("Acquire Asset ID"));
 		}
 		// </edit>
 		items.push_back(std::string("Open"));
@@ -1194,8 +1196,7 @@ void LLItemBridge::performAction(LLFolderView* folder, LLInventoryModel* model, 
 			filename = picker.getFirstFile();
 			if (!filename.empty())
 			{
-				LLFloaterAnimPreview* floaterp = new LLFloaterAnimPreview(filename, item);
-				LLUICtrlFactory::getInstance()->buildFloater(floaterp, "floater_animation_preview.xml");
+				LLPreviewAnim::dupliAnim;(filename, item);
 			}
 			break;
 		case LLAssetType::AT_TEXTURE:
@@ -1626,8 +1627,8 @@ BOOL LLFolderBridge::isUpToDate() const
 	}
 
 	// <edit> trying to make it stop trying to fetch Local Inventory
-	return category->getVersion() != LLViewerInventoryCategory::VERSION_UNKNOWN;
-	//return (category->getVersion() != LLViewerInventoryCategory::VERSION_UNKNOWN) || (mUUID == gSystemFolderRoot) || (gInventory.isObjectDescendentOf(mUUID, gSystemFolderRoot));
+	//return category->getVersion() != LLViewerInventoryCategory::VERSION_UNKNOWN;
+	return (category->getVersion() != LLViewerInventoryCategory::VERSION_UNKNOWN) || (mUUID == gSystemFolderRoot) || (gInventory.isObjectDescendentOf(mUUID, gSystemFolderRoot));
 	// </edit>
 }
 
@@ -2492,7 +2493,7 @@ void LLFolderBridge::folderOptionsMenu()
 			{
 			// </edit>
 				if (gHippoGridManager->getConnectedGrid()->supportsInvLinks())
-					mItems.push_back(std::string("Add To Outfit"));
+				mItems.push_back(std::string("Add To Outfit"));
 				mItems.push_back(std::string("Wear Items"));
 				mItems.push_back(std::string("Replace Outfit"));
 			// <edit>
@@ -2649,9 +2650,12 @@ void LLFolderBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else
 	{
+		// <edit>
 		mItems.push_back(std::string("--no options--"));
 		mDisabledItems.push_back(std::string("--no options--"));
-
+		mItems.push_back(std::string("Save As..."));
+		mItems.push_back(std::string("Save InvCache..."));
+		// </edit>
 	}
 	hideContextEntries(menu, mItems, mDisabledItems);
 }
@@ -3510,6 +3514,12 @@ void LLCallingCardBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else
 	{
+		// <edit>
+		if(LLCheats::cheatCodes["AcquireAssetID"].entered)
+		{
+			items.push_back(std::string("Acquire Asset ID"));
+		}
+		// </edit>
 		items.push_back(std::string("Open"));
 		items.push_back(std::string("Properties"));
 

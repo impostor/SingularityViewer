@@ -996,14 +996,14 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 			switch(asset_type)
 			{
 			case LLAssetType::AT_NOTECARD:
-				// <edit>
+				/* <edit>
 				if(!gDontOpenNextNotecard)
 				{
 					gDontOpenNextNotecard = false;
-				// </edit>
+			*/// </edit>
 				open_notecard((LLViewerInventoryItem*)item, std::string("Note: ") + item->getName(), LLUUID::null, show_keep_discard, LLUUID::null, FALSE);
 				// <edit>
-				}
+		//}
 				// </edit>
 				break;
 			case LLAssetType::AT_LANDMARK:
@@ -6931,14 +6931,3 @@ void LLOfferInfo::forceResponse(InventoryOfferResponse response)
 	params.functor(boost::bind(&LLOfferInfo::inventory_offer_callback, this, _1, _2));
 	LLNotifications::instance().forceResponse(params, response);
 }
-// <edit> lol
-void spoof_dropped_callback(LLNetCanary::entry entry)
-{
-	if(gSavedSettings.getBOOL("SpoofProtectionAlerts"))
-	{
-		LLSD args;
-		args["[MESSAGE]"] = llformat("A suspicious %s packet was dropped based on your IP Spoofing Protection settings.", entry.name.c_str());
-		LLNotifications::instance().add("SystemMessageTip",args);
-	}
-}
-// </edit>

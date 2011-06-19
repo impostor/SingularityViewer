@@ -474,6 +474,21 @@ class LLFileImportWear : public view_listener_t
 };
 
 
+class LLFileImportGesture : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		LLFilePicker& picker = LLFilePicker::instance();
+		if (!picker.getOpenFile(LLFilePicker::FFLOAD_GEST))
+		{
+			return true;
+		}
+		std::string file_name = picker.getFirstFile();
+		new LLFloaterXmlImportOptions(new LLXmlImportOptions(file_name));
+		return true;
+	}
+};
+
 class LLFileEnableImportXML : public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
@@ -1446,6 +1461,8 @@ void init_menu_file()
 	(new LLFileImportXML())->registerListener(gMenuHolder, "File.ImportXML");
 	(new LLFileEnableImportXML())->registerListener(gMenuHolder, "File.EnableImportXML");
 	(new LLFileImportWear())->registerListener(gMenuHolder, "File.ImportWear");
+	(new LLFileImportGesture())->registerListener(gMenuHolder, "File.ImportGesture");
+
 	// </edit>
 	(new LLFileCloseWindow())->registerListener(gMenuHolder, "File.CloseWindow");
 	(new LLFileCloseAllWindows())->registerListener(gMenuHolder, "File.CloseAllWindows");
