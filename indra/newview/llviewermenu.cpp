@@ -68,7 +68,6 @@
 #include "llfloaterexploreanimations.h"
 #include "llfloaterexploresounds.h"
 #include "llfloaterblacklist.h"
-#include "llnotecardmagic.h"
 // </edit>
 #include "lltimer.h"
 #include "llvfile.h"
@@ -513,8 +512,6 @@ void handle_vfs_explorer(void*);
 void handle_sounds_explorer(void*);
 void handle_blacklist(void*);
 void handle_keytool_from_clipboard(void*);
-void handle_magic_get(void*);
-void handle_magic_get_all(void*);
 // </edit>
 
 BOOL is_inventory_visible( void* user_data );
@@ -876,10 +873,6 @@ void init_menus()
 		&handle_keytool_from_clipboard, NULL, NULL, 'K', MASK_CONTROL | MASK_SHIFT));
 	menu->append(new LLMenuItemCallGL(	"Local Assets...",
 												&handle_local_assets, NULL));
-	menu->append(new LLMenuItemCallGL(	"Magic Get", 
-										&handle_magic_get, NULL));
-	menu->append(new LLMenuItemCallGL(	"Magic Get All", 
-										&handle_magic_get_all, NULL));											
 	menu->appendSeparator();
 	menu->append(new LLMenuItemCallGL(	"VFS Explorer",
 												&handle_vfs_explorer, NULL));
@@ -3932,42 +3925,6 @@ void handle_interceptor(void*)
 		LLFloaterInterceptor::sInstance->close(false);
 	else
 		LLFloaterInterceptor::show();
-}
-
-void handle_magic_get(void*)
-{
-	std::set<LLUUID> item_ids;
-	LLFloater* top = gFloaterView->getFrontmost();
-	if (top)
-	{
-		LLUUID item_id = top->getItemID();
-		if(item_id.notNull())
-		{
-			item_ids.insert(item_id);
-		}
-	}
-	if(item_ids.size())
-		LLNotecardMagic::acquire(item_ids);
-}
-
-void handle_magic_get_all(void*)
-{
-	std::set<LLUUID> item_ids;
-	LLView::child_list_t child_list = *(gFloaterView->getChildList());
-	for (LLView::child_list_const_iter_t it = child_list.begin(); it != child_list.end(); ++it)
-	{
-		LLFloater* floaterp = (LLFloater*)(*it);
-		if(floaterp)
-		{
-			LLUUID item_id = floaterp->getItemID();
-			if(item_id.notNull())
-			{
-				item_ids.insert(item_id);
-			}
-		}
-	}
-	if(item_ids.size())
-		LLNotecardMagic::acquire(item_ids);
 }
 
 void handle_sounds_explorer(void*)

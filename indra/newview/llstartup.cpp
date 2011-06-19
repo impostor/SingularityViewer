@@ -201,7 +201,6 @@
 
 // <edit>
 #include "llpanellogin.h"
-#include "llcheats.h"
 #include "wlfPanel_AdvSettings.h" //Lower right Windlight and Rendering options
 #include "ascentdaycyclemanager.h"
 #include "llfloaterblacklist.h"
@@ -1906,9 +1905,6 @@ bool idle_startup()
 		LLWLParamManager::initClass();
 		AscentDayCycleManager::initClass();
 		LLWaterParamManager::initClass();
-		// <edit>
-		LLCheats::init();
-		// </edit>
 
 		// RN: don't initialize VO classes in drone mode, they are too closely tied to rendering
 		LLViewerObject::initVOClasses();

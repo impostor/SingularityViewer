@@ -148,6 +148,10 @@
 	     mouse_opaque="true" name="Copy Asset UUID" width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="copy_uuid" />
 	</menu_item_call>
+	<menu_item_call bottom_delta="-18" height="18" label="Impostor Rez in World" left="0" mouse_opaque="true"
+	 name="Rez" width="128">
+			<on_click filter="" function="Inventory.DoToSelected" userdata="rez" />
+		</menu_item_call>
 	<menu_item_separator />
 		<menu_item_call bottom_delta="-18" height="18" label="Edit With Hex Editor" left="0" mouse_opaque="true"
 	     name="Hex Open" width="128">
@@ -158,15 +162,6 @@
 			<on_click filter="" function="Inventory.DoToSelected" userdata="open text" />
 		</menu_item_call>
 	<menu_item_separator />
-		<menu_item_call bottom_delta="-18" height="18" label="Impostor Rez in World" left="0" mouse_opaque="true"
-	 name="Rez" width="128">
-			<on_click filter="" function="Inventory.DoToSelected" userdata="rez" />
-		</menu_item_call>
-	<menu_item_call bottom_delta="-18" height="18" label="Impostor Recreate" left="0" mouse_opaque="true"
-	 name="Reupload..." width="128">
-		<on_click filter="" function="Inventory.DoToSelected" userdata="reupload" />
-	</menu_item_call>
-	<menu_item_separator />
 <menu_item_call bottom_delta="-18" height="18" label="Impostor Save As" left="0" mouse_opaque="true"
 	 name="Save As..." width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="save_as" />
@@ -175,16 +170,7 @@
 	 name="Save InvCache..." width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="save_invcache" />
 	</menu_item_call>
-	<menu_item_separator />
-	<menu_item_call bottom_delta="-18" height="18" label="Impostor Magic" left="0" mouse_opaque="true"
-	 name="Magic Get" width="128">
-		<on_click filter="" function="Inventory.DoToSelected" userdata="magic_get" />
-	</menu_item_call>
-	 <menu_item_call bottom_delta="-18" height="18" label="Impostor Wizard" left="0" mouse_opaque="true"
-	 name="Acquire Asset ID" width="128">
-		<on_click filter="" function="Inventory.DoToSelected" userdata="acquire_asset_id" />
-	</menu_item_call>
-	</menu>
+		</menu>
 	<menu_item_call bottom_delta="-18" height="18" label="Open" left="0" mouse_opaque="true"
 	     name="Open" width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="open" />
