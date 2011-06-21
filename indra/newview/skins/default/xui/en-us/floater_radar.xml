@@ -56,6 +56,17 @@
 			       font="SansSerifSmall"
 			       follows="bottom|left"
 			       />
+      <button
+			       name="spazzy_btn"
+			       label="Deform"
+			       tool_tip="Deforms the selected avatar"
+			       left_delta="90"
+			       bottom_delta="0"
+			       width="80"
+			       height="20"
+			       font="SansSerifSmall"
+			       follows="bottom|left"
+			       />
 			<!-- upper middle row -->
 			<button
 			       name="im_btn"
@@ -89,7 +100,18 @@
 			       height="20"
 			       font="SansSerifSmall"
 			       follows="bottom|left"
-			       />			
+			       />
+      <button
+			       name="debug_btn"
+			       label="AV Textures"
+			       tool_tip="Opens the selected avatar's"
+			       left_delta="90"
+			       bottom_delta="0"
+			       width="80"
+			       height="20"
+			       font="SansSerifSmall"
+			       follows="bottom|left"
+			       />
 			<!-- lower middle row-->
 			<button
 			       name="mark_btn"
@@ -124,11 +146,22 @@
 			       font="SansSerifSmall"
 			       follows="bottom|left"
 			       />
+      <button
+			       name="anims_btn"
+			       label="AV Anims"
+			       tool_tip="Rip the selected avatars animations"
+			       left_delta="90"
+			       bottom_delta="0"
+			       width="80"
+			       height="20"
+			       font="SansSerifSmall"
+			       follows="bottom|left"
+			       />
 			<!-- lower row-->
 			<button
 			       name="focus_btn"
-			       label="Focus"
-			       tool_tip="Focus camera on this avatar in the list"
+			       label="Zoom in"
+			       tool_tip="Zooms in camera on this avatar in the list"
 			       left="10"
 			       bottom_delta="-22"
 			       width="80"
@@ -158,7 +191,17 @@
 			       font="SansSerifSmall"
 			       follows="bottom|left"
 			       />
-
+      <button
+               name="export_dude_btn"
+               label="AV Export"
+               tool_tip="Export the selected avatar in list"
+               left_delta="90"
+               bottom_delta="0"
+               width="80"
+               height="20"
+               font="SansSerifSmall"
+               follows="bottom|left"
+			       />
 		</panel>
 
 		<panel border="true" bottom_delta="-150" follows="left|top|right|bottom" height="255"
